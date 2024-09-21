@@ -1,0 +1,14 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\users\\xgrim\\documents\\udemy\\unreal engine 5 c++ multiplayer shooter\\projects\\blaster\\plugins\\multiplayersessions\\source\\multiplayersessions\\private\\multiplayersessions.cpp",
+        "ProvidedModule": "",
+        "PCH": "c:\\users\\xgrim\\documents\\udemy\\unreal engine 5 c++ multiplayer shooter\\projects\\blaster\\intermediate\\build\\win64\\x64\\blaster\\development\\engine\\sharedpch.engine.project.valapi.cpp20.h.pch",
+        "Includes": [
+            "c:\\users\\xgrim\\documents\\udemy\\unreal engine 5 c++ multiplayer shooter\\projects\\blaster\\plugins\\multiplayersessions\\intermediate\\build\\win64\\x64\\unrealgame\\development\\multiplayersessions\\definitions.multiplayersessions.h",
+            "c:\\users\\xgrim\\documents\\udemy\\unreal engine 5 c++ multiplayer shooter\\projects\\blaster\\plugins\\multiplayersessions\\source\\multiplayersessions\\public\\multiplayersessions.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}
