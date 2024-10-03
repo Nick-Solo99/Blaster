@@ -7,6 +7,9 @@
 #include "GameFramework/PlayerController.h"
 #include "BlasterPlayerController.generated.h"
 
+class UPauseMenu;
+class UInputAction;
+class UInputMappingContext;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FHighPingDelegate, bool, bPingTooHigh);
 
 class ABlasterGameMode;
@@ -47,6 +50,7 @@ public:
 	
 protected:
 	virtual void BeginPlay() override;
+	virtual void SetupInputComponent() override;
 	void CheckTimeSync(float DeltaSeconds);
 	void SetHUDTime();
 	void PollInit();
@@ -80,8 +84,31 @@ protected:
 	void HighPingWarning();
 	void StopHighPingWarning();
 	void CheckPing(float DeltaSeconds);
+
+	/**
+	 * Input
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputMappingContext* BlasterPlayerControllerMappingContext;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* OpenMenuAction;
+
+	void ShowPauseMenu();
 	
 private:
+	/**
+	 * Menu
+	 */
+	UPROPERTY(EditAnywhere, Category = HUD)
+	TSubclassOf<UUserWidget> PauseMenuWidget;
+
+	UPROPERTY()
+	UPauseMenu* PauseMenu;
+
+	bool bPauseMenuOpen{false};
+
+	
 	UPROPERTY()
 	ABlasterHUD* BlasterHUD;
 
