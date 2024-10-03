@@ -3,6 +3,8 @@
 
 #include "BlasterPlayerController.h"
 
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
 #include "Blaster/BlasterComponents/CombatComponent.h"
 #include "Blaster/Character/BlasterCharacter.h"
 #include "Blaster/HUD/BlasterHUD.h"
@@ -12,6 +14,7 @@
 #include "Blaster/GameMode/BlasterGameMode.h"
 #include "Blaster/GameState/BlasterGameState.h"
 #include "Blaster/HUD/Announcement.h"
+#include "Blaster/HUD/PauseMenu.h"
 #include "Blaster/PlayerState/BlasterPlayerState.h"
 #include "Components/Image.h"
 #include "Kismet/GameplayStatics.h"
@@ -20,8 +23,24 @@
 void ABlasterPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (UEnhancedInputLocalPlayerSubsystem* InputSubsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
+	{
+		InputSubsystem->AddMappingContext(BlasterPlayerControllerMappingContext, 0);
+	}
+	
 	BlasterHUD = Cast<ABlasterHUD>(GetHUD());
 	ServerCheckMatchState();
+}
+
+void ABlasterPlayerController::SetupInputComponent()
+{
+	Super::SetupInputComponent();
+
+	if(UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent))
+	{
+		EnhancedInputComponent->BindAction(OpenMenuAction, ETriggerEvent::Started, this, &ThisClass::ShowPauseMenu);
+	}
 }
 
 void ABlasterPlayerController::CheckTimeSync(float DeltaSeconds)
@@ -78,6 +97,27 @@ void ABlasterPlayerController::CheckPing(float DeltaSeconds)
 		if (PingAnimationRunningTime > HighPingDuration)
 		{
 			StopHighPingWarning();
+		}
+	}
+}
+
+void ABlasterPlayerController::ShowPauseMenu()
+{
+	if (PauseMenuWidget == nullptr) return;
+	if (PauseMenu == nullptr)
+	{
+		PauseMenu = CreateWidget<UPauseMenu>(this, PauseMenuWidget);
+	}
+	if (PauseMenu)
+	{
+		bPauseMenuOpen = !bPauseMenuOpen;
+		if (bPauseMenuOpen)
+		{
+			PauseMenu->MenuSetup();
+		}
+		else
+		{
+			PauseMenu->MenuTeardown();
 		}
 	}
 }
