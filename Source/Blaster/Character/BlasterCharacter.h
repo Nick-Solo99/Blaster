@@ -10,6 +10,8 @@
 #include "GameFramework/Character.h"
 #include "BlasterCharacter.generated.h"
 
+class UNiagaraComponent;
+class UNiagaraSystem;
 class ULagCompensationComponent;
 class UBoxComponent;
 class UBuffComponent;
@@ -78,6 +80,12 @@ public:
 	void ServerLeaveGame();
 	
 	FOnLeftGame OnLeftGame;
+
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastGainTheLead();
+
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastLostTheLead();
 	
 protected:
 	virtual void BeginPlay() override;
@@ -338,7 +346,7 @@ private:
 	UMaterialInstance* DissolveMaterialInstance;
 
 	/**
-	 * Elim Bot
+	 * Elim Effects
 	 */
 	UPROPERTY(EditAnywhere)
 	UParticleSystem* ElimBotEffect;
@@ -351,6 +359,12 @@ private:
 
 	UPROPERTY()
 	ABlasterPlayerState* BlasterPlayerState;
+
+	UPROPERTY(EditAnywhere)
+	UNiagaraSystem* CrownSystem;
+
+	UPROPERTY()
+	UNiagaraComponent* CrownComponent;
 
 	/**
 	 * Grenade
