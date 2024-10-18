@@ -5,6 +5,11 @@
 
 #include "Announcement.h"
 #include "CharacterOverlay.h"
+#include "Chat.h"
+#include "ElimAnnouncement.h"
+#include "Components/HorizontalBox.h"
+#include "Blueprint/WidgetLayoutLibrary.h"
+#include "Components/CanvasPanelSlot.h"
 
 void ABlasterHUD::DrawHUD()
 {
@@ -71,6 +76,94 @@ void ABlasterHUD::AddAnnouncement()
 	}
 }
 
+void ABlasterHUD::AddElimAnnouncement(FString Attacker, FString Victim)
+{
+	OwningPlayer = OwningPlayer == nullptr ? GetOwningPlayerController() : OwningPlayer;
+	if (OwningPlayer && ElimAnnouncementClass)
+	{
+		UElimAnnouncement* ElimAnnouncementWidget = CreateWidget<UElimAnnouncement>(OwningPlayer, ElimAnnouncementClass);
+		if (ElimAnnouncementWidget)
+		{
+			ElimAnnouncementWidget->SetElimAnnouncementText(Attacker, Victim);
+			ElimAnnouncementWidget->AddToViewport();
+
+			for (auto Msg : ElimMessages)
+			{
+				if (Msg && Msg->AnnouncementBox)
+				{
+					UCanvasPanelSlot* CanvasSlot = UWidgetLayoutLibrary::SlotAsCanvasSlot(Msg->AnnouncementBox);
+					if (CanvasSlot)
+					{
+						FVector2D Position = CanvasSlot->GetPosition();
+						FVector2D NewPosition(
+							Position.X,
+							Position.Y - CanvasSlot->GetSize().Y
+						);
+						CanvasSlot->SetPosition(NewPosition);
+					}
+				}
+			}
+
+
+			
+			ElimMessages.Add(ElimAnnouncementWidget);
+
+			FTimerHandle ElimMsgTimer;
+			FTimerDelegate ElimMsgDelegate;
+			ElimMsgDelegate.BindUFunction(this, FName("ElimAnnouncementTimerFinished"), ElimAnnouncementWidget);
+			GetWorldTimerManager().SetTimer(
+				ElimMsgTimer,
+				ElimMsgDelegate,
+				ElimAnnouncementTime,
+				false
+			);
+		}
+	}
+}
+
+void ABlasterHUD::AddChatMessage(FString User, FString Message)
+{
+	OwningPlayer = OwningPlayer == nullptr ? GetOwningPlayerController() : OwningPlayer;
+	if (OwningPlayer && ChatClass)
+	{
+		UChat* ChatMessageWidget = CreateWidget<UChat>(OwningPlayer, ChatClass);
+		if (ChatMessageWidget)
+		{
+			ChatMessageWidget->SetChatMessage(User, Message);
+			ChatMessageWidget->AddToViewport();
+
+			for (auto Msg : ChatMessages)
+			{
+				if (Msg && Msg->MsgBox)
+				{
+					UCanvasPanelSlot* CanvasSlot = UWidgetLayoutLibrary::SlotAsCanvasSlot(Msg->MsgBox);
+					if (CanvasSlot)
+					{
+						FVector2D Position = CanvasSlot->GetPosition();
+						FVector2D NewPosition(
+							Position.X,
+							Position.Y - CanvasSlot->GetSize().Y
+						);
+						CanvasSlot->SetPosition(NewPosition);
+					}
+				}
+			}
+			
+			ChatMessages.Add(ChatMessageWidget);
+
+			FTimerHandle ChatMsgTimer;
+			FTimerDelegate ChatMsgDelegate;
+			ChatMsgDelegate.BindUFunction(this, FName("ChatMessageTimerFinished"), ChatMessageWidget);
+			GetWorldTimerManager().SetTimer(
+				ChatMsgTimer,
+				ChatMsgDelegate,
+				ChatMessageTime,
+				false
+			);
+		}
+	}
+}
+
 void ABlasterHUD::DrawCrosshair(UTexture2D* Texture, FVector2D ViewportCenter, FVector2D Spread, FLinearColor CrosshairColor)
 {
 	const float TextureWidth = Texture->GetSizeX();
@@ -93,4 +186,21 @@ void ABlasterHUD::DrawCrosshair(UTexture2D* Texture, FVector2D ViewportCenter, F
 		1.f,
 		CrosshairColor
 	);
+}
+
+void ABlasterHUD::ELimAnnouncementTimerFinished(UElimAnnouncement* MsgToRemove)
+{
+	if (MsgToRemove)
+	{
+		MsgToRemove->RemoveFromParent();
+		
+	}
+}
+
+void ABlasterHUD::ChatMessageTimerFinished(UChat* ChatMsgToRemove)
+{
+	if (ChatMsgToRemove)
+	{
+		ChatMsgToRemove->RemoveFromParent();
+	}
 }

@@ -7,6 +7,9 @@
 #include "GameFramework/PlayerController.h"
 #include "BlasterPlayerController.generated.h"
 
+class UPauseMenu;
+class UInputAction;
+class UInputMappingContext;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FHighPingDelegate, bool, bPingTooHigh);
 
 class ABlasterGameMode;
@@ -44,9 +47,12 @@ public:
 	float SingleTripTime{0.f};
 
 	FHighPingDelegate HighPingDelegate;
-	
+
+	void BroadcastElim(APlayerState* Attacker, APlayerState* Victim);
+	void BroadcastChatMessage(const FString& User, const FString& Message);
 protected:
 	virtual void BeginPlay() override;
+	virtual void SetupInputComponent() override;
 	void CheckTimeSync(float DeltaSeconds);
 	void SetHUDTime();
 	void PollInit();
@@ -80,8 +86,47 @@ protected:
 	void HighPingWarning();
 	void StopHighPingWarning();
 	void CheckPing(float DeltaSeconds);
-	
+
+	/**
+	 * Input
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputMappingContext* BlasterPlayerControllerMappingContext;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* OpenMenuAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* OpenChatAction;
+
+	void ShowPauseMenu();
+
+	void OpenChat();
+
+	UFUNCTION()
+	void SendChatMessage(const FText& Text, ETextCommit::Type CommitMethod);
+
+	UFUNCTION(Server, Reliable)
+	void ServerSendChatMessage(const FString& Message);
+
+	UFUNCTION(Client, Reliable)
+	void ClientSendChatMessage(const FString& User, const FString& Message);
+
+	UFUNCTION(Client, Reliable)
+	void ClientElimAnnouncement(APlayerState* Attacker, APlayerState* Victim);
 private:
+	/**
+	 * Menu
+	 */
+	UPROPERTY(EditAnywhere, Category = HUD)
+	TSubclassOf<UUserWidget> PauseMenuWidget;
+
+	UPROPERTY()
+	UPauseMenu* PauseMenu;
+
+	bool bPauseMenuOpen{false};
+
+	
 	UPROPERTY()
 	ABlasterHUD* BlasterHUD;
 

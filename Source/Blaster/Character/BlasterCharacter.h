@@ -10,6 +10,8 @@
 #include "GameFramework/Character.h"
 #include "BlasterCharacter.generated.h"
 
+class UNiagaraComponent;
+class UNiagaraSystem;
 class ULagCompensationComponent;
 class UBoxComponent;
 class UBuffComponent;
@@ -25,6 +27,8 @@ class UInputMappingContext;
 class UInputAction;
 class UAnimMontage;
 class USoundCue;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLeftGame);
 
 UCLASS()
 class BLASTER_API ABlasterCharacter : public ACharacter, public IInteractWithCrosshairsInterface
@@ -49,9 +53,9 @@ public:
 	void PlaySwapMontage();
 	
 	virtual void OnRep_ReplicatedMovement() override;
-	void Elim();
+	void Elim(bool bPlayerLeftGame);
 	UFUNCTION(NetMulticast, Reliable)
-	virtual void MulticastElim();
+	virtual void MulticastElim(bool bPlayerLeftGame);
 	virtual void Destroyed() override;
 
 	UPROPERTY(Replicated)
@@ -71,6 +75,17 @@ public:
 	TMap<FName, UBoxComponent*> HitCollisionBoxes;
 
 	bool bFinishedSwapping{false};
+
+	UFUNCTION(Server, Reliable)
+	void ServerLeaveGame();
+	
+	FOnLeftGame OnLeftGame;
+
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastGainTheLead();
+
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastLostTheLead();
 	
 protected:
 	virtual void BeginPlay() override;
@@ -304,6 +319,8 @@ private:
 	
 	void ElimTimerFinished();
 
+	bool bLeftGame{false};
+
 	/**
 	 * Dissolve Effects
 	 */
@@ -329,7 +346,7 @@ private:
 	UMaterialInstance* DissolveMaterialInstance;
 
 	/**
-	 * Elim Bot
+	 * Elim Effects
 	 */
 	UPROPERTY(EditAnywhere)
 	UParticleSystem* ElimBotEffect;
@@ -342,6 +359,12 @@ private:
 
 	UPROPERTY()
 	ABlasterPlayerState* BlasterPlayerState;
+
+	UPROPERTY(EditAnywhere)
+	UNiagaraSystem* CrownSystem;
+
+	UPROPERTY()
+	UNiagaraComponent* CrownComponent;
 
 	/**
 	 * Grenade
