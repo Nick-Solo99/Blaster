@@ -16,6 +16,7 @@
 #include "Blaster/HUD/Announcement.h"
 #include "Blaster/HUD/PauseMenu.h"
 #include "Blaster/PlayerState/BlasterPlayerState.h"
+#include "Components/EditableTextBox.h"
 #include "Components/Image.h"
 #include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
@@ -78,6 +79,7 @@ void ABlasterPlayerController::SetupInputComponent()
 	if(UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent))
 	{
 		EnhancedInputComponent->BindAction(OpenMenuAction, ETriggerEvent::Started, this, &ThisClass::ShowPauseMenu);
+		EnhancedInputComponent->BindAction(OpenChatAction, ETriggerEvent::Started, this, &ThisClass::OpenChat);
 	}
 }
 
@@ -157,6 +159,62 @@ void ABlasterPlayerController::ShowPauseMenu()
 		{
 			PauseMenu->MenuTeardown();
 		}
+	}
+}
+
+void ABlasterPlayerController::OpenChat()
+{
+	BlasterHUD = BlasterHUD == nullptr ? Cast<ABlasterHUD>(GetHUD()) : BlasterHUD;
+	if (BlasterHUD && BlasterHUD->CharacterOverlay && IsLocalController())
+	{
+		BlasterHUD->CharacterOverlay->ChatTextBox->SetText(FText());
+		BlasterHUD->CharacterOverlay->ChatTextBox->SetUserFocus(this);
+		BlasterHUD->CharacterOverlay->ChatTextBox->OnTextCommitted.AddDynamic(this, &ThisClass::SendChatMessage);
+	}
+}
+
+void ABlasterPlayerController::SendChatMessage(const FText& Text, ETextCommit::Type CommitMethod)
+{
+	if (HasAuthority() && IsLocalController())
+	{
+		BlasterGameMode = BlasterGameMode == nullptr ? Cast<ABlasterGameMode>(UGameplayStatics::GetGameMode(this)) : BlasterGameMode;
+		if (BlasterGameMode)
+		{
+			BlasterGameMode->SendChatMessage(GetPlayerState<APlayerState>()->GetPlayerName(), Text.ToString());
+		}
+	}
+	else
+	{
+		ServerSendChatMessage(Text.ToString());
+	}
+	BlasterHUD->CharacterOverlay->ChatTextBox->SetText(FText::FromString("Press Enter to chat"));
+	FInputModeGameOnly InputMode;
+	SetInputMode(InputMode);
+	BlasterHUD->CharacterOverlay->ChatTextBox->OnTextCommitted.RemoveAll(this);
+}
+
+void ABlasterPlayerController::ServerSendChatMessage_Implementation(const FString& Message)
+{
+	BlasterGameMode = BlasterGameMode == nullptr ? Cast<ABlasterGameMode>(UGameplayStatics::GetGameMode(this)) : BlasterGameMode;
+	if (BlasterGameMode)
+	{
+		BlasterGameMode->SendChatMessage(GetPlayerState<APlayerState>()->GetPlayerName(), Message);
+	}
+}
+
+void ABlasterPlayerController::BroadcastChatMessage(const FString& User, const FString& Message)
+{
+	ClientSendChatMessage(User, Message);
+}
+
+void ABlasterPlayerController::ClientSendChatMessage_Implementation(const FString& User, const FString& Message)
+{
+	FString Self = GetPlayerState<APlayerState>()->GetPlayerName();
+	UE_LOG(LogTemp, Warning, TEXT("Client: %s, User: %s, Message: %s"), *Self, *User, *Message);
+	BlasterHUD = BlasterHUD == nullptr ? Cast<ABlasterHUD>(GetHUD()) : BlasterHUD;
+	if (BlasterHUD)
+	{
+		BlasterHUD->AddChatMessage(User, Message);
 	}
 }
 

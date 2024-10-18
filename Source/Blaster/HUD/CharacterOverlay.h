@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "CharacterOverlay.generated.h"
 
+class UEditableTextBox;
 class UImage;
 class UTextBlock;
 class UProgressBar;
@@ -58,6 +59,9 @@ public:
 
 	UPROPERTY(meta = (BindWidgetAnim), Transient)
 	UWidgetAnimation* HighPingAnimation;
+
+	UPROPERTY(meta = (BindWidget))
+	UEditableTextBox* ChatTextBox;
 protected:
 
 private:

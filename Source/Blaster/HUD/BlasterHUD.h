@@ -6,6 +6,7 @@
 #include "GameFramework/HUD.h"
 #include "BlasterHUD.generated.h"
 
+class UChat;
 class APlayerController;
 class UElimAnnouncement;
 class UAnnouncement;
@@ -64,6 +65,7 @@ public:
 	void AddCharacterOverlay();
 	void AddAnnouncement();
 	void AddElimAnnouncement(FString Attacker, FString Victim);
+	void AddChatMessage(FString User, FString Message);
 	
 protected:
 	virtual void BeginPlay() override;
@@ -91,6 +93,18 @@ private:
 
 	UPROPERTY()
 	TArray<UElimAnnouncement*> ElimMessages;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UChat> ChatClass;
+
+	UPROPERTY(EditAnywhere)
+	float ChatMessageTime{3.5f};
+
+	UFUNCTION()
+	void ChatMessageTimerFinished(UChat* ChatMsgToRemove);
+
+	UPROPERTY()
+	TArray<UChat*> ChatMessages;
 
 public:
 	FORCEINLINE void SetHUDPackage(const FHUDPackage& Package) { HUDPackage = Package; }
