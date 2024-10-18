@@ -6,10 +6,10 @@
 /NAME:"UnrealEditor-MultiplayerSessions.dll"
 /IGNORE:4221
 /NODEFAULTLIB
-"C:\Users\xGrim\Documents\Udemy\Unreal Engine 5 C++ Multiplayer Shooter\Projects\MenuSystem\Intermediate\Build\Win64\x64\MenuSystemEditor\Development\UnrealEd\SharedPCH.UnrealEd.Project.ValApi.Cpp20.h.obj"
-"C:\Users\xGrim\Documents\Udemy\Unreal Engine 5 C++ Multiplayer Shooter\Projects\MenuSystem\Plugins\MultiplayerSessions\Intermediate\Build\Win64\x64\UnrealEditor\Development\MultiplayerSessions\Module.MultiplayerSessions.cpp.obj"
-"C:\Users\xGrim\Documents\Udemy\Unreal Engine 5 C++ Multiplayer Shooter\Projects\MenuSystem\Plugins\MultiplayerSessions\Intermediate\Build\Win64\x64\UnrealEditor\Development\MultiplayerSessions\Menu.cpp.obj"
-"C:\Users\xGrim\Documents\Udemy\Unreal Engine 5 C++ Multiplayer Shooter\Projects\MenuSystem\Plugins\MultiplayerSessions\Intermediate\Build\Win64\x64\UnrealEditor\Development\MultiplayerSessions\MultiplayerSessions.cpp.obj"
-"C:\Users\xGrim\Documents\Udemy\Unreal Engine 5 C++ Multiplayer Shooter\Projects\MenuSystem\Plugins\MultiplayerSessions\Intermediate\Build\Win64\x64\UnrealEditor\Development\MultiplayerSessions\MultiplayerSessionsSubsystem.cpp.obj"
-"C:\Users\xGrim\Documents\Udemy\Unreal Engine 5 C++ Multiplayer Shooter\Projects\MenuSystem\Plugins\MultiplayerSessions\Intermediate\Build\Win64\x64\UnrealEditor\Development\MultiplayerSessions\Default.rc2.res"
-/OUT:"C:\Users\xGrim\Documents\Udemy\Unreal Engine 5 C++ Multiplayer Shooter\Projects\MenuSystem\Plugins\MultiplayerSessions\Intermediate\Build\Win64\x64\UnrealEditor\Development\MultiplayerSessions\UnrealEditor-MultiplayerSessions.lib"
+"C:\Users\xGrim\Documents\Udemy\Unreal Engine 5 C++ Multiplayer Shooter\Projects\Blaster\Intermediate\Build\Win64\x64\BlasterEditor\Development\UnrealEd\SharedPCH.UnrealEd.Project.ValApi.Cpp20.h.obj"
+"C:\Users\xGrim\Documents\Udemy\Unreal Engine 5 C++ Multiplayer Shooter\Projects\Blaster\Plugins\MultiplayerSessions\Intermediate\Build\Win64\x64\UnrealEditor\Development\MultiplayerSessions\Module.MultiplayerSessions.cpp.obj"
+"C:\Users\xGrim\Documents\Udemy\Unreal Engine 5 C++ Multiplayer Shooter\Projects\Blaster\Plugins\MultiplayerSessions\Intermediate\Build\Win64\x64\UnrealEditor\Development\MultiplayerSessions\Menu.cpp.obj"
+"C:\Users\xGrim\Documents\Udemy\Unreal Engine 5 C++ Multiplayer Shooter\Projects\Blaster\Plugins\MultiplayerSessions\Intermediate\Build\Win64\x64\UnrealEditor\Development\MultiplayerSessions\MultiplayerSessions.cpp.obj"
+"C:\Users\xGrim\Documents\Udemy\Unreal Engine 5 C++ Multiplayer Shooter\Projects\Blaster\Plugins\MultiplayerSessions\Intermediate\Build\Win64\x64\UnrealEditor\Development\MultiplayerSessions\MultiplayerSessionsSubsystem.cpp.obj"
+"C:\Users\xGrim\Documents\Udemy\Unreal Engine 5 C++ Multiplayer Shooter\Projects\Blaster\Plugins\MultiplayerSessions\Intermediate\Build\Win64\x64\UnrealEditor\Development\MultiplayerSessions\Default.rc2.res"
+/OUT:"C:\Users\xGrim\Documents\Udemy\Unreal Engine 5 C++ Multiplayer Shooter\Projects\Blaster\Plugins\MultiplayerSessions\Intermediate\Build\Win64\x64\UnrealEditor\Development\MultiplayerSessions\UnrealEditor-MultiplayerSessions.lib"
