@@ -49,6 +49,7 @@ public:
 	FHighPingDelegate HighPingDelegate;
 
 	void BroadcastElim(APlayerState* Attacker, APlayerState* Victim);
+	void BroadcastChatMessage(const FString& User, const FString& Message);
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
@@ -95,7 +96,21 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* OpenMenuAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* OpenChatAction;
+
 	void ShowPauseMenu();
+
+	void OpenChat();
+
+	UFUNCTION()
+	void SendChatMessage(const FText& Text, ETextCommit::Type CommitMethod);
+
+	UFUNCTION(Server, Reliable)
+	void ServerSendChatMessage(const FString& Message);
+
+	UFUNCTION(Client, Reliable)
+	void ClientSendChatMessage(const FString& User, const FString& Message);
 
 	UFUNCTION(Client, Reliable)
 	void ClientElimAnnouncement(APlayerState* Attacker, APlayerState* Victim);

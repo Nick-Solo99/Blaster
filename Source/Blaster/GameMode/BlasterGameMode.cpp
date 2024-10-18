@@ -188,4 +188,16 @@ void ABlasterGameMode::PlayerLeftGame(ABlasterPlayerState* PlayerLeaving)
 	
 }
 
+void ABlasterGameMode::SendChatMessage(const FString& User, const FString& Message)
+{
+	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+	{
+		ABlasterPlayerController* BlasterPlayer = Cast<ABlasterPlayerController>(*It);
+		if (BlasterPlayer)
+		{
+			BlasterPlayer->BroadcastChatMessage(User, Message);
+		}
+	}
+}
+
 
