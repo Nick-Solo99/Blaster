@@ -11,6 +11,7 @@
 #include "GameFramework/Character.h"
 #include "BlasterCharacter.generated.h"
 
+class ABlasterGameMode;
 class UNiagaraComponent;
 class UNiagaraSystem;
 class ULagCompensationComponent;
@@ -398,6 +399,9 @@ private:
 	 */
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<AWeapon> DefaultWeaponClass;
+
+	UPROPERTY()
+	ABlasterGameMode* BlasterGameMode;
 	
 public:
 	void SetOverlappingWeapon(AWeapon* Weapon);
