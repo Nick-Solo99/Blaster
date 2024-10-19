@@ -7,6 +7,8 @@
 #include "GameFramework/PlayerController.h"
 #include "BlasterPlayerController.generated.h"
 
+class ABlasterGameState;
+class ABlasterPlayerState;
 class UPauseMenu;
 class UInputAction;
 class UInputMappingContext;
@@ -124,6 +126,9 @@ protected:
 
 	UFUNCTION()
 	void OnRep_ShowTeamScores();
+
+	FString GetInfoText(const TArray<ABlasterPlayerState*>& Players);
+	FString GetTeamsInfoText(ABlasterGameState* BlasterGameState);
 private:
 	/**
 	 * Menu
