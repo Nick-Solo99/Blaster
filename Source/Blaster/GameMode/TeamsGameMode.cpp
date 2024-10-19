@@ -16,15 +16,15 @@ void ATeamsGameMode::PostLogin(APlayerController* NewPlayer)
 		ABlasterPlayerState* BPState = NewPlayer->GetPlayerState<ABlasterPlayerState>();
 		if (BPState && BPState->GetTeam() == ETeam::ET_NoTeam)
 		{
-			if (BGameState->GreenTeam.Num() >= BGameState->RedTeam.Num())
+			if (BGameState->BlueTeam.Num() >= BGameState->RedTeam.Num())
 			{
 				BGameState->RedTeam.AddUnique(BPState);
 				BPState->SetTeam(ETeam::ET_RedTeam);
 			}
 			else
 			{
-				BGameState->GreenTeam.AddUnique(BPState);
-				BPState->SetTeam(ETeam::ET_GreenTeam);
+				BGameState->BlueTeam.AddUnique(BPState);
+				BPState->SetTeam(ETeam::ET_BlueTeam);
 			}
 		}
 	}
@@ -41,9 +41,9 @@ void ATeamsGameMode::Logout(AController* Exiting)
 		{
 			BGameState->RedTeam.Remove(BPState);
 		}
-		if (BGameState->GreenTeam.Contains(BPState))
+		if (BGameState->BlueTeam.Contains(BPState))
 		{;
-			BGameState->GreenTeam.Remove(BPState);
+			BGameState->BlueTeam.Remove(BPState);
 		}
 	}
 }
@@ -60,15 +60,15 @@ void ATeamsGameMode::HandleMatchHasStarted()
 			ABlasterPlayerState* BPState = Cast<ABlasterPlayerState>(PState.Get());
 			if (BPState && BPState->GetTeam() == ETeam::ET_NoTeam)
 			{
-				if (BGameState->GreenTeam.Num() >= BGameState->RedTeam.Num())
+				if (BGameState->BlueTeam.Num() >= BGameState->RedTeam.Num())
 				{
 					BGameState->RedTeam.AddUnique(BPState);
 					BPState->SetTeam(ETeam::ET_RedTeam);
 				}
 				else
 				{
-					BGameState->GreenTeam.AddUnique(BPState);
-					BPState->SetTeam(ETeam::ET_GreenTeam);
+					BGameState->BlueTeam.AddUnique(BPState);
+					BPState->SetTeam(ETeam::ET_BlueTeam);
 				}
 			}
 		}
