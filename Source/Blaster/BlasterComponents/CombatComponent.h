@@ -248,6 +248,8 @@ private:
 	void UpdateHUDGrenades();
 
 	uint32 Sequence;
+
+	bool bHoldingTheFlag{false};
 	
 public:	
 	FORCEINLINE int32 GetGrenades() const { return Grenades; }
