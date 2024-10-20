@@ -732,6 +732,7 @@ void ABlasterCharacter::JumpButtonPressed()
 
 void ABlasterCharacter::Jump()
 {
+	if (CombatComponent && CombatComponent->bHoldingTheFlag) return;
 	if (!bIsCrouched)
 	{
 		Super::Jump();
@@ -748,6 +749,7 @@ void ABlasterCharacter::EquipButtonPressed()
 	if (bDisableGameplay) return;
 	if (CombatComponent)
 	{
+		if (CombatComponent->bHoldingTheFlag) return;
 		if (CombatComponent->CombatState == ECombatState::ECS_Unoccupied) ServerEquipButtonPressed();
 		bool bSwap =
 			CombatComponent->ShouldSwapWeapons() &&
@@ -765,18 +767,21 @@ void ABlasterCharacter::EquipButtonPressed()
 
 void ABlasterCharacter::CrouchButtonPressed()
 {
+	if (CombatComponent && CombatComponent->bHoldingTheFlag) return;
 	if (bDisableGameplay) return;
 	Crouch();
 }
 
 void ABlasterCharacter::CrouchButtonReleased()
 {
+	if (CombatComponent && CombatComponent->bHoldingTheFlag) return;
 	if (bDisableGameplay) return;
 	UnCrouch();
 }
 
 void ABlasterCharacter::ReloadButtonPressed()
 {
+	if (CombatComponent && CombatComponent->bHoldingTheFlag) return;
 	if (bDisableGameplay) return;
 	if (CombatComponent)
 	{
@@ -786,6 +791,7 @@ void ABlasterCharacter::ReloadButtonPressed()
 
 void ABlasterCharacter::AimButtonPressed()
 {
+	if (CombatComponent && CombatComponent->bHoldingTheFlag) return;
 	if (bDisableGameplay) return;
 	if (CombatComponent)
 	{
@@ -795,6 +801,7 @@ void ABlasterCharacter::AimButtonPressed()
 
 void ABlasterCharacter::AimButtonReleased()
 {
+	if (CombatComponent && CombatComponent->bHoldingTheFlag) return;
 	if (bDisableGameplay) return;
 	if (CombatComponent)
 	{
@@ -804,6 +811,7 @@ void ABlasterCharacter::AimButtonReleased()
 
 void ABlasterCharacter::FireButtonPressed()
 {
+	if (CombatComponent && CombatComponent->bHoldingTheFlag) return;
 	if (bDisableGameplay) return;
 	if (CombatComponent)
 	{
@@ -813,6 +821,7 @@ void ABlasterCharacter::FireButtonPressed()
 
 void ABlasterCharacter::FireButtonReleased()
 {
+	if (CombatComponent && CombatComponent->bHoldingTheFlag) return;
 	if (bDisableGameplay) return;
 	if (CombatComponent)
 	{
@@ -822,6 +831,7 @@ void ABlasterCharacter::FireButtonReleased()
 
 void ABlasterCharacter::ThrowGrenadeButtonPressed()
 {
+	if (CombatComponent && CombatComponent->bHoldingTheFlag) return;
 	if (CombatComponent)
 	{
 		CombatComponent->ThrowGrenade();
