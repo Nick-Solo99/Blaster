@@ -114,6 +114,10 @@ protected:
 	void ThrowGrenadeButtonPressed();
 	void DropOrDestroyWeapon(AWeapon* Weapon);
 	void DropOrDestroyWeapons();
+	void SetSpawnPoint();
+	void OnPlayerStateInitialized();
+
+	
 	// Poll for any relevant classes and initialize HUD
 	void PollInit();
 
