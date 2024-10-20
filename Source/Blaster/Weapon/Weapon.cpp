@@ -29,12 +29,12 @@ AWeapon::AWeapon()
 	WeaponMesh->SetCustomDepthStencilValue(CUSTOM_DEPTH_PURPLE);
 	WeaponMesh->MarkRenderStateDirty();
 	EnableCustomDepth(true);
-
+	
 	AreaSphere = CreateDefaultSubobject<USphereComponent>(TEXT("AreaSphere"));
 	AreaSphere->SetupAttachment(RootComponent);
 	AreaSphere->SetCollisionResponseToAllChannels(ECR_Ignore);
 	AreaSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
+	
 	PickupWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("PickupWidget"));
 	PickupWidget->SetupAttachment(RootComponent);
 }

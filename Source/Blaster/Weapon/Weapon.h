@@ -173,8 +173,11 @@ private:
 
 	UFUNCTION()
 	void OnRep_WeaponState();
-	
+
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
+	TSubclassOf<UUserWidget> PickupClass;
+	
+	UPROPERTY(VisibleAnywhere, Category = "Weapon Properties")
 	UWidgetComponent* PickupWidget;
 
 	UPROPERTY(EditAnywhere)

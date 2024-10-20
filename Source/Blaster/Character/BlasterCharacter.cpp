@@ -897,6 +897,13 @@ void ABlasterCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const 
 
 void ABlasterCharacter::RotateInPlace(float DeltaTime)
 {
+	if (CombatComponent && CombatComponent->bHoldingTheFlag)
+	{
+		bUseControllerRotationYaw = false;
+		GetCharacterMovement()->bOrientRotationToMovement = true;
+		TurningInPlace = ETurningInPlace::ETIP_NotTurning;
+		return;
+	}
 	if (bDisableGameplay)
 	{
 		bUseControllerRotationYaw = false;
