@@ -430,5 +430,5 @@ public:
 	bool IsLocallyReloading();
 	FORCEINLINE ULagCompensationComponent* GetLagCompensationComponent() const { return LagCompensationComponent; }
 	bool IsHoldingTheFlag() const;
-	
+	ETeam GetTeam();
 };
