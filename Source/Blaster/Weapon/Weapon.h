@@ -243,5 +243,6 @@ public:
 	FORCEINLINE int32 GetMagCapacity() const { return MagCapacity; }
 	FORCEINLINE float GetDamage() const { return Damage; }
 	FORCEINLINE float GetHeadshotDamage() const { return HeadshotDamage; }
+	FORCEINLINE ETeam GetTeam() const { return Team; }
 
 };
