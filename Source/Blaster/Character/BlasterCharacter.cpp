@@ -863,6 +863,10 @@ void ABlasterCharacter::DropOrDestroyWeapons()
 		{
 			DropOrDestroyWeapon(CombatComponent->SecondaryWeapon);
 		}
+		if (CombatComponent->TheFlag)
+		{
+			DropOrDestroyWeapon(CombatComponent->TheFlag);
+		}
 		
 	}
 }

@@ -250,6 +250,9 @@ private:
 
 	uint32 Sequence;
 
+	UPROPERTY()
+	AWeapon* TheFlag;
+
 	UPROPERTY(ReplicatedUsing = OnRep_HoldingTheFlag)
 	bool bHoldingTheFlag{false};
 
