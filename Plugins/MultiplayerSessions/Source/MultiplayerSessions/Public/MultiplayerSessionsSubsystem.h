@@ -46,6 +46,9 @@ public:
 	FOnMultiplayerFindSessionsComplete MultiplayerFindSessionsComplete;
 	FOnMultiplayerDestroySessionComplete MultiplayerDestroySessionComplete;
 	FOnMultiplayerStartSessionComplete MultiplayerStartSessionComplete;
+
+	int32 DesiredNumPublicConnections{};
+	FString DesiredMatchType{};
 protected:
 
 	/**
