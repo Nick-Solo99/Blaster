@@ -406,6 +406,9 @@ private:
 
 	UPROPERTY()
 	ABlasterGameMode* BlasterGameMode;
+
+	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = true))
+	float LookSensitivity{1.0};
 	
 public:
 	void SetOverlappingWeapon(AWeapon* Weapon);

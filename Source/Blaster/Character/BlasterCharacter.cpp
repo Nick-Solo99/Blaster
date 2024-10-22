@@ -510,6 +510,18 @@ void ABlasterCharacter::PollInit()
 			{
 				MulticastGainTheLead();
 			}
+			if (BlasterPlayerController == nullptr)
+			{
+				BlasterPlayerController = BlasterPlayerController == nullptr ? Cast<ABlasterPlayerController>(Controller) : BlasterPlayerController;
+				if (BlasterPlayerController)
+				{
+					SpawnDefaultWeapon();
+					UpdateHUDAmmo();
+					UpdateHUDHealth();
+					UpdateHUDShield();
+					UpdateHUDGrenades();
+				}
+			}
 		}
 	}
 }
@@ -586,11 +598,6 @@ void ABlasterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	InitializeEnhancedInput();
-	SpawnDefaultWeapon();
-	UpdateHUDAmmo();
-	UpdateHUDHealth();
-	UpdateHUDShield();
-	UpdateHUDGrenades();
 	if (HasAuthority())
 	{
 		OnTakeAnyDamage.AddDynamic(this, &ThisClass::ReceiveDamage);
@@ -718,8 +725,8 @@ void ABlasterCharacter::Look(const FInputActionValue& Value)
 	FVector2D CurrentValue = Value.Get<FVector2D>();
 	if ((GetController()) && (CurrentValue != FVector2D::Zero()))
 	{
-		AddControllerPitchInput(CurrentValue.Y);
-		AddControllerYawInput(CurrentValue.X);
+		AddControllerPitchInput(CurrentValue.Y * LookSensitivity);
+		AddControllerYawInput(CurrentValue.X * LookSensitivity);
 	}
 }
 

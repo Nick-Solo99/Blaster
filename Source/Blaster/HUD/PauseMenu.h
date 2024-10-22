@@ -41,5 +41,8 @@ private:
 
 	UPROPERTY()
 	APlayerController* PlayerController;
+
+	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = true))
+	UUserWidget* SettingsWidget;
 	
 };

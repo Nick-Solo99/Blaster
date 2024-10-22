@@ -19,8 +19,13 @@ void UPauseMenu::MenuSetup()
 	if (World)
 	{
 		PlayerController = PlayerController == nullptr ? World->GetFirstPlayerController() : PlayerController;
-		if (PlayerController)
+		if (PlayerController && PlayerController->GetPawn())
 		{
+			ABlasterCharacter* BlasterCharacter = Cast<ABlasterCharacter>(PlayerController->GetPawn());
+			if (BlasterCharacter)
+			{
+				BlasterCharacter->bDisableGameplay = true;
+			}
 			FInputModeGameAndUI InputModeData;
 			InputModeData.SetWidgetToFocus(TakeWidget());
 			PlayerController->SetInputMode(InputModeData);
@@ -83,6 +88,10 @@ void UPauseMenu::OnDestroySession(bool bWasSuccessful)
 
 void UPauseMenu::MenuTeardown()
 {
+	if (SettingsWidget)
+	{
+		SettingsWidget->RemoveFromParent();
+	}
 	RemoveFromParent();
 	UWorld* World = GetWorld();
 	if (World)
@@ -90,6 +99,11 @@ void UPauseMenu::MenuTeardown()
 		PlayerController = PlayerController == nullptr ? World->GetFirstPlayerController() : PlayerController;
 		if (PlayerController)
 		{
+			ABlasterCharacter* BlasterCharacter = Cast<ABlasterCharacter>(PlayerController->GetPawn());
+			if (BlasterCharacter)
+			{
+				BlasterCharacter->bDisableGameplay = false;
+			}
 			FInputModeGameOnly InputModeData;
 			PlayerController->SetInputMode(InputModeData);
 			PlayerController->SetShowMouseCursor(false);
